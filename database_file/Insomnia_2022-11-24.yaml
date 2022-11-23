@@ -1,0 +1,605 @@
+_type: export
+__export_format: 4
+__export_date: 2022-11-23T18:44:16.417Z
+__export_source: insomnia.desktop.app:v2022.5.1
+resources:
+  - _id: req_d3eac96320d947c8b8e7a49e926999cf
+    parentId: fld_f4230e8a3784486fb913d4006280239b
+    modified: 1669227648129
+    created: 1669227214694
+    url: localhost:5000/comment/1
+    name: Update
+    description: ""
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"id_post_comment": 1,
+        	"user_name_comment": "dotaa",
+        	"comment": "dota"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_5d60d2932a5843a2bf8e52ac51a6d1f6
+    authentication: {}
+    metaSortKey: -1669227214694
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_f4230e8a3784486fb913d4006280239b
+    parentId: wrk_3611e6b9c95c463bb4b7ab19274ae1dc
+    modified: 1669226656855
+    created: 1669226656855
+    name: Comments
+    description: ""
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1669226656855
+    _type: request_group
+  - _id: wrk_3611e6b9c95c463bb4b7ab19274ae1dc
+    parentId: null
+    modified: 1669211806009
+    created: 1669211806009
+    name: muxblog
+    description: ""
+    scope: collection
+    _type: workspace
+  - _id: req_95382fa03dfb430c89af596b7fe1dcfa
+    parentId: fld_f4230e8a3784486fb913d4006280239b
+    modified: 1669227865739
+    created: 1669226770091
+    url: localhost:5000/comment/create
+    name: Create
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"id_post_comment": 2,
+        	"user_name_comment": "dota",
+        	"comment": "dotaa"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_adfce97e317d4441acc06f98fe469a41
+    authentication: {}
+    metaSortKey: -1669226770091
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_53899c58bd5848d6956af117817793c2
+    parentId: fld_f4230e8a3784486fb913d4006280239b
+    modified: 1669226713856
+    created: 1669226704263
+    url: localhost:5000/comment/1
+    name: id
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1669226704263
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_4ff7e8fc6bd7448180ada497a409e2af
+    parentId: fld_f4230e8a3784486fb913d4006280239b
+    modified: 1669226664955
+    created: 1669226658094
+    url: localhost:5000/comments
+    name: New Request
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1669226658094
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_b9029bae0c1844ceb739bb4dcd55fab3
+    parentId: fld_3cde48e492f44c318c23d7aaf7dbe035
+    modified: 1669228805134
+    created: 1669228714284
+    url: localhost:5000/posts/relation/2
+    name: New Request
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1669228714284
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_3cde48e492f44c318c23d7aaf7dbe035
+    parentId: wrk_3611e6b9c95c463bb4b7ab19274ae1dc
+    modified: 1669218489934
+    created: 1669218489934
+    name: Posts
+    description: ""
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1669218489934
+    _type: request_group
+  - _id: req_b964ecebf79e4578a5b224f2038a045e
+    parentId: fld_3cde48e492f44c318c23d7aaf7dbe035
+    modified: 1669223676726
+    created: 1669223641834
+    url: localhost:5000/posts/1
+    name: New Request
+    description: ""
+    method: DELETE
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1669223641834
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_013ae873f8704346b21ac8f3115c7c37
+    parentId: fld_3cde48e492f44c318c23d7aaf7dbe035
+    modified: 1669223693970
+    created: 1669223253372
+    url: localhost:5000/posts/update/1
+    name: New Request
+    description: ""
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"title": "dotaa",
+        	"slug": "dota-2",
+        	"body": "dota game",
+        	"category_id": 1,
+        	"user_id": 1,
+        	"user_name": "dota2as"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_d71bdc90219240a98e52a5bf08d3e7db
+    authentication: {}
+    metaSortKey: -1669223253372
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_35ee76b423a3470dbacd10c3d0a21963
+    parentId: fld_3cde48e492f44c318c23d7aaf7dbe035
+    modified: 1669227782893
+    created: 1669221571657
+    url: localhost:5000/posts/create
+    name: Create
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"title": "dota",
+        	"slug": "dota-2",
+        	"body": "dota game",
+        	"category_id": 1,
+        	"user_id": 1,
+        	"user_name": "dota2as"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_3aa31651cd314d419a7743f287e00ad7
+    authentication: {}
+    metaSortKey: -1669221571657
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_ede15a791f7242469afe92fc30800f65
+    parentId: fld_3cde48e492f44c318c23d7aaf7dbe035
+    modified: 1669221569125
+    created: 1669221554732
+    url: localhost:5000/posts
+    name: GetAll
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1669221554732
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_ec746ff603534770a597718364b33c8e
+    parentId: fld_827ef2c4d79348fc98a81d9156158f53
+    modified: 1669218478069
+    created: 1669218429283
+    url: localhost:5000/users/1
+    name: Delete
+    description: ""
+    method: DELETE
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1669218429283
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_827ef2c4d79348fc98a81d9156158f53
+    parentId: wrk_3611e6b9c95c463bb4b7ab19274ae1dc
+    modified: 1669214368265
+    created: 1669214368265
+    name: Users
+    description: ""
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1669214368265
+    _type: request_group
+  - _id: req_a7334259ce7d47419d26785aa4e14ce2
+    parentId: fld_827ef2c4d79348fc98a81d9156158f53
+    modified: 1669218424235
+    created: 1669218405382
+    url: localhost:5000/users/1
+    name: Getid
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1669218405382
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_297fc461e0094ca4b1e30d5b0c3a8f35
+    parentId: fld_827ef2c4d79348fc98a81d9156158f53
+    modified: 1669218474844
+    created: 1669218253282
+    url: localhost:5000/users/update/1
+    name: Update
+    description: ""
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"firstname": "dota2",
+        	"lastname": "dot2saAA",
+        	"email": "kentang@dot.com",
+        	"password": "dota222"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_600a2e428cbb4e4aa299fd56c2799e65
+    authentication: {}
+    metaSortKey: -1669218253282
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_7bbacd39f64a41c4813f0b31c1934d4a
+    parentId: fld_827ef2c4d79348fc98a81d9156158f53
+    modified: 1669218228059
+    created: 1669214369785
+    url: localhost:5000/users
+    name: New Request
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication:
+      type: bearer
+      token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImtlbnRhbmdGQGRvdC5jb20iLCJleHAiOjE2NjkyMjE3MjksIm5hbWUiOiJkb3RhMiIsInVzZXJfaWQiOjJ9.-wMFUhFCysQQd1I7Jn0fhNHe5GJlDOK_iOE64YA7R54
+      disabled: false
+    metaSortKey: -1669214369785
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_ad1575a5f1604a18959786c9c26ce849
+    parentId: fld_876b7d293dca4568b7b3d5e4f0dfd33e
+    modified: 1669221706399
+    created: 1669212975466
+    url: localhost:5000/category/1
+    name: getid
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1669212975466
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_876b7d293dca4568b7b3d5e4f0dfd33e
+    parentId: wrk_3611e6b9c95c463bb4b7ab19274ae1dc
+    modified: 1669211820336
+    created: 1669211820336
+    name: Categories
+    description: ""
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1669211820336
+    _type: request_group
+  - _id: req_c675a3f07b774af69c3c2dac78d85d3e
+    parentId: fld_876b7d293dca4568b7b3d5e4f0dfd33e
+    modified: 1669213029068
+    created: 1669212814170
+    url: localhost:5000/category/3
+    name: Delete
+    description: ""
+    method: DELETE
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1669212814170
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_633aa3424a244538acd7df3f771deb13
+    parentId: fld_876b7d293dca4568b7b3d5e4f0dfd33e
+    modified: 1669221699146
+    created: 1669212787394
+    url: localhost:5000/category/create
+    name: Create
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"name": "dota"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_3eecc031ae994b4fbaab1a99781c00f6
+    authentication: {}
+    metaSortKey: -1669212787394
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_d75d7c06918845c6b1848c342cdacf7e
+    parentId: fld_876b7d293dca4568b7b3d5e4f0dfd33e
+    modified: 1669218483844
+    created: 1669212001458
+    url: localhost:5000/category/update/1
+    name: Update
+    description: ""
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"name": "dota"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_496a723e730347afb355d2afd5f1b6fe
+    authentication: {}
+    metaSortKey: -1669212001458
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_d3976e90bb3f45689e35e60b31fbf6c5
+    parentId: fld_876b7d293dca4568b7b3d5e4f0dfd33e
+    modified: 1669212008455
+    created: 1669211821486
+    url: localhost:5000/category
+    name: All
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1669211821486
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_68a6b18eacab43af96972e6113dbef22
+    parentId: fld_f2e95249ae8c4164aab4ee1a8ed873ce
+    modified: 1669221648502
+    created: 1669217926929
+    url: localhost:5000/auth/login
+    name: Login
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"email": "kentangF@dot.com",
+        	"password": "dota222"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_632a76e65dba4abab34f30515e3ae9a5
+    authentication: {}
+    metaSortKey: -1669217926929
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_f2e95249ae8c4164aab4ee1a8ed873ce
+    parentId: wrk_3611e6b9c95c463bb4b7ab19274ae1dc
+    modified: 1669211811007
+    created: 1669211811007
+    name: Auth
+    description: ""
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1669211811007
+    _type: request_group
+  - _id: req_3bce4fff081448f8b981feec5a518350
+    parentId: fld_f2e95249ae8c4164aab4ee1a8ed873ce
+    modified: 1669221651266
+    created: 1669211812441
+    url: localhost:5000/auth/register
+    name: Register
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"firstname": "dota2",
+        	"lastname": "dot2saAA",
+        	"email": "kentangF@dot.com",
+        	"password": "dota222"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_1244ce9684d64d9d9584460519498d39
+    authentication: {}
+    metaSortKey: -1669211812441
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: env_1721b1f2a5abc2d13fb46345835efd39e67a3a5b
+    parentId: wrk_3611e6b9c95c463bb4b7ab19274ae1dc
+    modified: 1669211806040
+    created: 1669211806040
+    name: Base Environment
+    data: {}
+    dataPropertyOrder: null
+    color: null
+    isPrivate: false
+    metaSortKey: 1669211806040
+    _type: environment
+  - _id: jar_1721b1f2a5abc2d13fb46345835efd39e67a3a5b
+    parentId: wrk_3611e6b9c95c463bb4b7ab19274ae1dc
+    modified: 1669211806041
+    created: 1669211806041
+    name: Default Jar
+    cookies: []
+    _type: cookie_jar
+  - _id: spc_36d6d8aaf7a64423a1eaa7c6abee5425
+    parentId: wrk_3611e6b9c95c463bb4b7ab19274ae1dc
+    modified: 1669211806036
+    created: 1669211806036
+    fileName: muxblog
+    contents: ""
+    contentType: yaml
+    _type: api_spec
