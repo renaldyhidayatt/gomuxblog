@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	"muxblog/dao"
 	"muxblog/schemas"
 )
@@ -38,10 +39,13 @@ func (s *servicePosts) Create(input *schemas.Post) (schemas.Post, error) {
 
 	post.Title = input.Title
 	post.Slug = input.Slug
+	post.Img = input.Img
 	post.Body = input.Body
 	post.CategoryID = input.CategoryID
 	post.UserID = input.UserID
 	post.UserName = input.UserName
+
+	fmt.Println(post)
 
 	res, err := s.posts.Create(&post)
 
@@ -54,10 +58,13 @@ func (s *servicePosts) Update(input *schemas.Post) (schemas.Post, error) {
 	post.ID = input.ID
 	post.Title = input.Title
 	post.Slug = input.Slug
+	post.Img = input.Img
 	post.Body = input.Body
 	post.CategoryID = input.CategoryID
 	post.UserID = input.UserID
 	post.UserName = input.UserName
+
+	fmt.Println(post)
 
 	res, err := s.posts.Update(&post)
 

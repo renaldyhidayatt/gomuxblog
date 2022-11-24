@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	"log"
 	"muxblog/schemas"
 )
@@ -27,7 +28,7 @@ func (r *postRepository) GetAll() ([]schemas.Post, error) {
 	}
 
 	for row.Next() {
-		if err = row.Scan(&postSchema.ID, &postSchema.Title, &postSchema.Slug, &postSchema.Body, &postSchema.CategoryID, &postSchema.UserID, &postSchema.UserName); err != nil && sql.ErrNoRows != nil {
+		if err = row.Scan(&postSchema.ID, &postSchema.Title, &postSchema.Slug, &postSchema.Img, &postSchema.Body, &postSchema.CategoryID, &postSchema.UserID, &postSchema.UserName); err != nil && sql.ErrNoRows != nil {
 			return nil, err
 		}
 
@@ -62,7 +63,7 @@ func (r *postRepository) GetIDRelationJoin(id int) (schemas.PostRelationJoin, er
 func (r *postRepository) GetID(id int) (schemas.Post, error) {
 	var postsModel schemas.Post
 
-	row, err := r.db.QueryContext(r.ctx, "SELECT id,title,slug,body,category_id,user_id,user_name FROM posts WHERE id = ?", id)
+	row, err := r.db.QueryContext(r.ctx, "SELECT id,title,slug,img,body,category_id,user_id,user_name FROM posts WHERE id = ?", id)
 
 	if err != nil {
 		log.Fatal("Error Query Category: " + err.Error())
@@ -70,8 +71,9 @@ func (r *postRepository) GetID(id int) (schemas.Post, error) {
 	}
 
 	for row.Next() {
-		err := row.Scan(&postsModel.ID, &postsModel.Title, &postsModel.Slug, &postsModel.Body, &postsModel.CategoryID, &postsModel.UserID, &postsModel.UserName)
+		err := row.Scan(&postsModel.ID, &postsModel.Title, &postsModel.Slug, &postsModel.Img, &postsModel.Body, &postsModel.CategoryID, &postsModel.UserID, &postsModel.UserName)
 		if err != nil {
+			log.Fatal(err.Error())
 			return postsModel, err
 		}
 	}
@@ -81,13 +83,13 @@ func (r *postRepository) GetID(id int) (schemas.Post, error) {
 
 func (r *postRepository) Create(input *schemas.Post) (schemas.Post, error) {
 
-	row, err := r.db.PrepareContext(r.ctx, "INSERT INTO posts (title,slug,body,category_id,user_id,user_name) VALUES (?,?,?,?,?,?)")
+	row, err := r.db.PrepareContext(r.ctx, "INSERT INTO posts (title,slug,img,body,category_id,user_id,user_name) VALUES (?,?,?,?,?,?,?)")
 
 	if err != nil {
 		log.Fatal(err.Error())
 	}
 
-	res, err := row.ExecContext(r.ctx, &input.Title, &input.Slug, &input.Body, &input.CategoryID, &input.UserID, &input.UserName)
+	res, err := row.ExecContext(r.ctx, &input.Title, &input.Slug, &input.Img, &input.Body, &input.CategoryID, &input.UserID, &input.UserName)
 
 	if err != nil {
 		log.Fatal(err.Error())
@@ -109,25 +111,31 @@ func (r *postRepository) Create(input *schemas.Post) (schemas.Post, error) {
 }
 
 func (r *postRepository) Update(input *schemas.Post) (schemas.Post, error) {
-	row, err := r.db.PrepareContext(r.ctx, "UPDATE posts SET title=?,slug=?,body=?,category_id=?,user_id=?,user_name=? WHERE id=?")
+	row, err := r.db.PrepareContext(r.ctx, "UPDATE posts SET title=?,slug=?,img=?,body=?,category_id=?,user_id=?,user_name=? WHERE id=?")
 
 	var postModel schemas.Post
 
 	if err != nil {
+		log.Fatal(err.Error())
 		return postModel, err
 	}
+	fmt.Println(input.ID)
+	fmt.Println(input)
 
 	if err != nil && err != sql.ErrNoRows {
 		log.Fatal(err)
+		return postModel, err
 	}
 
-	_, queryError := row.ExecContext(r.ctx, input.Title, input.Slug, input.Body, input.CategoryID, input.UserID, input.UserName, input.ID)
+	_, queryError := row.ExecContext(r.ctx, &input.Title, &input.Slug, &input.Img, &input.Body, &input.CategoryID, &input.UserID, &input.UserName, &input.ID)
 
 	if queryError != nil {
 		return postModel, err
 	}
 
 	res, err := r.GetID(input.ID)
+
+	fmt.Println(res)
 
 	if err != nil {
 		return postModel, err

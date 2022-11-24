@@ -22,6 +22,7 @@ CREATE TABLE posts (
   `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `title` varchar(200) NOT NULL,
   `slug` varchar(200) NOT NULL,
+  `img` varchar(100) NOT NULL,
   `body` text NOT NULL,
   `category_id` int(3) NOT NULL,
   `user_id` int(3) NOT NULL,

@@ -1,11 +1,13 @@
 package handler
 
 import (
-	"encoding/json"
+	"fmt"
+	"io"
 	"muxblog/dao"
 	"muxblog/helpers"
 	"muxblog/schemas"
 	"net/http"
+	"os"
 	"strconv"
 
 	"github.com/gorilla/mux"
@@ -78,31 +80,70 @@ func (h *handlerPosts) GetIDRelationJoin(w http.ResponseWriter, r *http.Request)
 }
 
 func (h *handlerPosts) Create(w http.ResponseWriter, r *http.Request) {
-	if r.Header.Get("Content-Type") != "application/json" {
-		http.Error(w, "Gunakan content type application/json", http.StatusBadRequest)
-		return
-	}
-	var posts schemas.Post
-
-	if err := json.NewDecoder(r.Body).Decode(&posts); err != nil {
-		helpers.ResponseWithError(w, http.StatusBadRequest, err.Error())
-		return
-	}
-
-	res, err := h.posts.Create(&posts)
+	title := r.FormValue("title")
+	slug := r.FormValue("slug")
+	file, filename, err := r.FormFile("img") // img
+	body := r.FormValue("body")
+	category_id := r.FormValue("category_id")
+	user_id := r.FormValue("user_id")
+	username := r.FormValue("user_name")
+	var postModel schemas.Post
 
 	if err != nil {
 		helpers.ResponseWithError(w, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	defer file.Close()
+
+	dst, err := os.Create(fmt.Sprintf("./uploads/%s", filename.Filename))
+
+	if err != nil {
+		helpers.ResponseWithError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+	defer dst.Close()
+
+	_, err = io.Copy(dst, file)
+
+	if err != nil {
+		helpers.ResponseWithError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	category, err := strconv.Atoi(category_id)
+
+	if err != nil {
+		helpers.ResponseWithError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	user, err := strconv.Atoi(user_id)
+
+	if err != nil {
+		helpers.ResponseWithError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	postModel.Title = title
+	postModel.Slug = slug
+	postModel.Img = filename.Filename
+	postModel.Body = body
+	postModel.CategoryID = category
+	postModel.UserID = user
+	postModel.UserName = username
+
+	res, err := h.posts.Create(&postModel)
+
+	if err != nil {
+		helpers.ResponseWithError(w, http.StatusInternalServerError, err.Error())
+		return
 	}
 
 	helpers.ResponseWithJSON(w, http.StatusCreated, res)
 }
 
 func (h *handlerPosts) Update(w http.ResponseWriter, r *http.Request) {
-	if r.Header.Get("Content-Type") != "application/json" {
-		http.Error(w, "Gunakan content type application/json", http.StatusBadRequest)
-		return
-	}
 	params := mux.Vars(r)
 	id, err := strconv.ParseInt(params["id"], 10, 64)
 
@@ -110,15 +151,61 @@ func (h *handlerPosts) Update(w http.ResponseWriter, r *http.Request) {
 		panic(err.Error())
 	}
 
-	var posts schemas.Post
+	title := r.FormValue("title")
+	slug := r.FormValue("slug")
+	file, filename, err := r.FormFile("img") // img
+	body := r.FormValue("body")
+	category_id := r.FormValue("category_id")
+	user_id := r.FormValue("user_id")
+	username := r.FormValue("user_name")
+	var postModel schemas.Post
 
-	if err := json.NewDecoder(r.Body).Decode(&posts); err != nil {
+	if err != nil {
 		helpers.ResponseWithError(w, http.StatusBadRequest, err.Error())
 		return
 	}
-	posts.ID = int(id)
 
-	res, err := h.posts.Update(&posts)
+	defer file.Close()
+
+	dst, err := os.Create(fmt.Sprintf("./uploads/%s", filename.Filename))
+
+	if err != nil {
+		helpers.ResponseWithError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+	defer dst.Close()
+
+	_, err = io.Copy(dst, file)
+
+	if err != nil {
+		helpers.ResponseWithError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	category, err := strconv.Atoi(category_id)
+
+	if err != nil {
+		helpers.ResponseWithError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	user, err := strconv.Atoi(user_id)
+
+	if err != nil {
+		helpers.ResponseWithError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	postModel.ID = int(id)
+	postModel.Title = title
+	postModel.Slug = slug
+	postModel.Img = filename.Filename
+	postModel.Body = body
+	postModel.CategoryID = category
+	postModel.UserID = user
+	postModel.UserName = username
+
+	res, err := h.posts.Update(&postModel)
 
 	if err != nil {
 		helpers.ResponseWithError(w, http.StatusBadRequest, err.Error())
