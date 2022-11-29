@@ -15,7 +15,12 @@ CREATE TABLE `comments` (
   `id` int(3) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `id_post_comment` int(3) NOT NULL,
   `user_name_comment` varchar(200) NOT NULL,
-  `comment` varchar(200) NOT NULL
+  `comment` varchar(200) NOT NULL,
+  CONSTRAINT fk_posts
+    FOREIGN KEY (id_post_comment) 
+        REFERENCES posts(id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
 )ENGINE=INNODB;
 
 CREATE TABLE posts (
