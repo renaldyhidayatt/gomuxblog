@@ -2,8 +2,8 @@ package router
 
 import (
 	"context"
-	"database/sql"
 	"fmt"
+	db "muxblog/db/sqlc"
 	"muxblog/handler"
 	"muxblog/middleware"
 	"muxblog/repository"
@@ -32,23 +32,23 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Welcome")
 }
 
-func NewCategoryRouter(db *sql.DB) *mux.Router {
+func NewCategoryRouter(db *db.Queries) *mux.Router {
 	context := context.Background()
 
-	repositoryCategory := repository.NewCategoryRepository(context, db)
-	serviceCategory := services.NewServiceCategory(repositoryCategory)
+	repositoryCategory := repository.NewCategoryRepository(db, context)
+	serviceCategory := services.NewCategoryService(repositoryCategory)
 	handlerCategory := handler.NewCategoryHandler(serviceCategory)
 
-	repositoryUser := repository.NewUserRepository(context, db)
-	serviceUser := services.NewServiceUser(repositoryUser)
+	repositoryUser := repository.NewUserRepository(db, context)
+	serviceUser := services.NewUserService(repositoryUser)
 	handlerUser := handler.NewUserHandler(serviceUser)
 
-	repositoryPosts := repository.NewPostsRepository(context, db)
-	servicePosts := services.NewServicePosts(repositoryPosts)
+	repositoryPosts := repository.NewPostsRepository(db, context)
+	servicePosts := services.NewPostService(repositoryPosts)
 	handlerPosts := handler.NewPostsHandler(servicePosts)
 
-	repositoryComment := repository.NewCommentRepository(context, db)
-	serviceComment := services.NewServiceComment(repositoryComment)
+	repositoryComment := repository.NewCommentRepository(db, context)
+	serviceComment := services.NewCommentService(repositoryComment)
 	handlerComment := handler.NewCommentHandler(serviceComment)
 
 	router := mux.NewRouter()

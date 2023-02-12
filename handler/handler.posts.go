@@ -3,9 +3,10 @@ package handler
 import (
 	"fmt"
 	"io"
-	"muxblog/dao"
+	db "muxblog/db/sqlc"
+	"muxblog/dto/request"
 	"muxblog/helpers"
-	"muxblog/schemas"
+	"muxblog/services"
 	"net/http"
 	"os"
 	"strconv"
@@ -14,15 +15,15 @@ import (
 )
 
 type handlerPosts struct {
-	posts dao.DaoPosts
+	service services.PostService
 }
 
-func NewPostsHandler(posts dao.DaoPosts) *handlerPosts {
-	return &handlerPosts{posts: posts}
+func NewPostsHandler(posts services.PostService) *handlerPosts {
+	return &handlerPosts{service: posts}
 }
 
 func (h *handlerPosts) GetAll(w http.ResponseWriter, r *http.Request) {
-	res, err := h.posts.GetAll()
+	res, err := h.service.FindAll()
 
 	if err != nil {
 		helpers.ResponseWithError(w, http.StatusBadRequest, err.Error())
@@ -41,14 +42,14 @@ func (h *handlerPosts) GetID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res, err := h.posts.GetID(int(id))
+	res, err := h.service.FindByID(int(id))
 
 	if err != nil {
 		helpers.ResponseWithError(w, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	if (schemas.Post{}) == res {
+	if (db.Post{}) == res {
 		helpers.ResponseWithJSON(w, http.StatusNotFound, res)
 	} else {
 		helpers.ResponseWithJSON(w, http.StatusOK, res)
@@ -65,14 +66,14 @@ func (h *handlerPosts) GetIDRelationJoin(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	res, err := h.posts.GetIDRelationJoin(int(id))
+	res, err := h.service.FindByIDRelationJoin(int(id))
 
 	if err != nil {
 		helpers.ResponseWithError(w, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	if (schemas.PostRelationJoin{}) == res {
+	if (db.GetPostRelationRow{}) == res {
 		helpers.ResponseWithJSON(w, http.StatusNotFound, res)
 	} else {
 		helpers.ResponseWithJSON(w, http.StatusOK, res)
@@ -87,7 +88,7 @@ func (h *handlerPosts) Create(w http.ResponseWriter, r *http.Request) {
 	category_id := r.FormValue("category_id")
 	user_id := r.FormValue("user_id")
 	username := r.FormValue("user_name")
-	var postModel schemas.Post
+	var postModel request.PostRequest
 
 	if err != nil {
 		helpers.ResponseWithError(w, http.StatusBadRequest, err.Error())
@@ -133,7 +134,7 @@ func (h *handlerPosts) Create(w http.ResponseWriter, r *http.Request) {
 	postModel.UserID = user
 	postModel.UserName = username
 
-	res, err := h.posts.Create(&postModel)
+	res, err := h.service.Create(&postModel)
 
 	if err != nil {
 		helpers.ResponseWithError(w, http.StatusInternalServerError, err.Error())
@@ -158,7 +159,8 @@ func (h *handlerPosts) Update(w http.ResponseWriter, r *http.Request) {
 	category_id := r.FormValue("category_id")
 	user_id := r.FormValue("user_id")
 	username := r.FormValue("user_name")
-	var postModel schemas.Post
+
+	var postModel request.PostRequest
 
 	if err != nil {
 		helpers.ResponseWithError(w, http.StatusBadRequest, err.Error())
@@ -205,7 +207,7 @@ func (h *handlerPosts) Update(w http.ResponseWriter, r *http.Request) {
 	postModel.UserID = user
 	postModel.UserName = username
 
-	res, err := h.posts.Update(&postModel)
+	res, err := h.service.Update(&postModel)
 
 	if err != nil {
 		helpers.ResponseWithError(w, http.StatusBadRequest, err.Error())
@@ -224,7 +226,7 @@ func (h *handlerPosts) Delete(w http.ResponseWriter, r *http.Request) {
 		panic(err.Error())
 	}
 
-	err = h.posts.Delete(int(id))
+	err = h.service.Delete(int(id))
 
 	if err != nil {
 		helpers.ResponseWithError(w, http.StatusBadRequest, err.Error())

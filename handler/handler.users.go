@@ -2,9 +2,10 @@ package handler
 
 import (
 	"encoding/json"
-	"muxblog/dao"
+	db "muxblog/db/sqlc"
+	"muxblog/dto/request"
 	"muxblog/helpers"
-	"muxblog/schemas"
+	"muxblog/services"
 	"muxblog/utils"
 	"net/http"
 	"strconv"
@@ -13,15 +14,15 @@ import (
 )
 
 type handlerUser struct {
-	user dao.DaoUsers
+	service services.UserServices
 }
 
-func NewUserHandler(user dao.DaoUsers) *handlerUser {
-	return &handlerUser{user: user}
+func NewUserHandler(user services.UserServices) *handlerUser {
+	return &handlerUser{service: user}
 }
 
 func (h *handlerUser) GetAll(w http.ResponseWriter, r *http.Request) {
-	res, err := h.user.GetAll()
+	res, err := h.service.FindAll()
 
 	if err != nil {
 		helpers.ResponseWithError(w, http.StatusBadRequest, err.Error())
@@ -39,14 +40,14 @@ func (h *handlerUser) GetBYID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res, err := h.user.GetBYID(int(id))
+	res, err := h.service.FindById(int(id))
 
 	if err != nil {
 		helpers.ResponseWithError(w, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	if (schemas.Users{}) == res {
+	if (db.User{}) == res {
 		helpers.ResponseWithJSON(w, http.StatusNotFound, res)
 	} else {
 		helpers.ResponseWithJSON(w, http.StatusOK, res)
@@ -58,13 +59,13 @@ func (h *handlerUser) Create(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Gunakan content type application/json", http.StatusBadRequest)
 		return
 	}
-	var user schemas.Users
+	var user request.UserRequest
 
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
 		helpers.ResponseWithError(w, http.StatusBadRequest, err.Error())
 	}
 
-	res, err := h.user.Create(&user)
+	res, err := h.service.Create(&user)
 
 	if err != nil {
 		helpers.ResponseWithError(w, http.StatusBadRequest, err.Error())
@@ -86,7 +87,7 @@ func (h *handlerUser) Update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var user schemas.Users
+	var user request.UserRequest
 
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
 		helpers.ResponseWithError(w, http.StatusBadRequest, err.Error())
@@ -94,7 +95,7 @@ func (h *handlerUser) Update(w http.ResponseWriter, r *http.Request) {
 
 	user.ID = int(id)
 
-	res, err := h.user.Update(&user)
+	res, err := h.service.Update(&user)
 
 	if err != nil {
 		helpers.ResponseWithError(w, http.StatusBadRequest, err.Error())
@@ -115,7 +116,7 @@ func (h *handlerUser) Delete(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = h.user.Delete(int(id))
+	err = h.service.Delete(int(id))
 
 	if err != nil {
 		helpers.ResponseWithError(w, http.StatusBadRequest, err.Error())
@@ -131,13 +132,13 @@ func (h *handlerUser) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var user schemas.AuthLogin
+	var user request.AuthLoginRequest
 
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
 		helpers.ResponseWithError(w, http.StatusBadRequest, err.Error())
 	}
 
-	res, err := h.user.Login(&user)
+	res, err := h.service.Login(&user)
 
 	if err != nil {
 		helpers.ResponseWithError(w, http.StatusBadRequest, err.Error())

@@ -2,9 +2,10 @@ package handler
 
 import (
 	"encoding/json"
-	"muxblog/dao"
+	db "muxblog/db/sqlc"
+	"muxblog/dto/request"
 	"muxblog/helpers"
-	"muxblog/schemas"
+	"muxblog/services"
 	"net/http"
 	"strconv"
 
@@ -12,15 +13,15 @@ import (
 )
 
 type handlerComment struct {
-	comment dao.DaoComment
+	service services.CommentService
 }
 
-func NewCommentHandler(comment dao.DaoComment) *handlerComment {
-	return &handlerComment{comment: comment}
+func NewCommentHandler(comment services.CommentService) *handlerComment {
+	return &handlerComment{service: comment}
 }
 
 func (h *handlerComment) GetAll(w http.ResponseWriter, r *http.Request) {
-	res, err := h.comment.GetAll()
+	res, err := h.service.FindAll()
 
 	if err != nil {
 		helpers.ResponseWithError(w, http.StatusBadRequest, err.Error())
@@ -39,14 +40,14 @@ func (h *handlerComment) GetID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res, err := h.comment.GetID(int(id))
+	res, err := h.service.FindByID(int(id))
 
 	if err != nil {
 		helpers.ResponseWithError(w, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	if (schemas.Comment{}) == res {
+	if (db.Comment{}) == res {
 		helpers.ResponseWithJSON(w, http.StatusNotFound, res)
 	} else {
 		helpers.ResponseWithJSON(w, http.StatusOK, res)
@@ -59,14 +60,14 @@ func (h *handlerComment) Create(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Gunakan content type application/json", http.StatusBadRequest)
 		return
 	}
-	var comments schemas.Comment
+	var comments request.CommentRequest
 
 	if err := json.NewDecoder(r.Body).Decode(&comments); err != nil {
 		helpers.ResponseWithError(w, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	res, err := h.comment.Create(&comments)
+	res, err := h.service.Create(&comments)
 
 	if err != nil {
 		helpers.ResponseWithError(w, http.StatusBadRequest, err.Error())
@@ -87,7 +88,7 @@ func (h *handlerComment) Update(w http.ResponseWriter, r *http.Request) {
 		panic(err.Error())
 	}
 
-	var comments schemas.Comment
+	var comments request.CommentRequest
 
 	if err := json.NewDecoder(r.Body).Decode(&comments); err != nil {
 		helpers.ResponseWithError(w, http.StatusBadRequest, err.Error())
@@ -95,7 +96,7 @@ func (h *handlerComment) Update(w http.ResponseWriter, r *http.Request) {
 	}
 	comments.ID = int(id)
 
-	res, err := h.comment.Update(&comments)
+	res, err := h.service.Update(&comments)
 
 	if err != nil {
 		helpers.ResponseWithError(w, http.StatusBadRequest, err.Error())
@@ -114,7 +115,7 @@ func (h *handlerComment) Delete(w http.ResponseWriter, r *http.Request) {
 		panic(err.Error())
 	}
 
-	err = h.comment.Delete(int(id))
+	err = h.service.Delete(int(id))
 
 	if err != nil {
 		helpers.ResponseWithError(w, http.StatusBadRequest, err.Error())

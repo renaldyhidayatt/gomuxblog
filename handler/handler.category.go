@@ -2,9 +2,10 @@ package handler
 
 import (
 	"encoding/json"
-	"muxblog/dao"
+	db "muxblog/db/sqlc"
+	"muxblog/dto/request"
 	"muxblog/helpers"
-	"muxblog/schemas"
+	"muxblog/services"
 	"net/http"
 	"strconv"
 
@@ -12,15 +13,15 @@ import (
 )
 
 type handlerCategory struct {
-	category dao.DaoCategories
+	service services.CategoryService
 }
 
-func NewCategoryHandler(category dao.DaoCategories) *handlerCategory {
-	return &handlerCategory{category: category}
+func NewCategoryHandler(category services.CategoryService) *handlerCategory {
+	return &handlerCategory{service: category}
 }
 
 func (h *handlerCategory) GetAll(w http.ResponseWriter, r *http.Request) {
-	res, err := h.category.GetAll()
+	res, err := h.service.FindAll()
 
 	if err != nil {
 		helpers.ResponseWithError(w, http.StatusBadRequest, err.Error())
@@ -39,14 +40,14 @@ func (h *handlerCategory) GetID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res, err := h.category.GetID(int(id))
+	res, err := h.service.FindByID(int(id))
 
 	if err != nil {
 		helpers.ResponseWithError(w, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	if (schemas.Categories{}) == res {
+	if (db.Category{}) == res {
 		helpers.ResponseWithJSON(w, http.StatusNotFound, res)
 	} else {
 		helpers.ResponseWithJSON(w, http.StatusOK, res)
@@ -59,14 +60,14 @@ func (h *handlerCategory) Create(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Gunakan content type application/json", http.StatusBadRequest)
 		return
 	}
-	var categories schemas.Categories
+	var categories request.CategoryRequest
 
 	if err := json.NewDecoder(r.Body).Decode(&categories); err != nil {
 		helpers.ResponseWithError(w, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	res, err := h.category.Create(&categories)
+	res, err := h.service.Create(&categories)
 
 	if err != nil {
 		helpers.ResponseWithError(w, http.StatusBadRequest, err.Error())
@@ -87,7 +88,7 @@ func (h *handlerCategory) Update(w http.ResponseWriter, r *http.Request) {
 		panic(err.Error())
 	}
 
-	var categories schemas.Categories
+	var categories request.CategoryRequest
 
 	if err := json.NewDecoder(r.Body).Decode(&categories); err != nil {
 		helpers.ResponseWithError(w, http.StatusBadRequest, err.Error())
@@ -95,7 +96,7 @@ func (h *handlerCategory) Update(w http.ResponseWriter, r *http.Request) {
 	}
 	categories.ID = int(id)
 
-	res, err := h.category.Update(&categories)
+	res, err := h.service.Update(&categories)
 
 	if err != nil {
 		helpers.ResponseWithError(w, http.StatusBadRequest, err.Error())
@@ -114,7 +115,7 @@ func (h *handlerCategory) Delete(w http.ResponseWriter, r *http.Request) {
 		panic(err.Error())
 	}
 
-	err = h.category.Delete(int(id))
+	err = h.service.Delete(int(id))
 
 	if err != nil {
 		helpers.ResponseWithError(w, http.StatusBadRequest, err.Error())

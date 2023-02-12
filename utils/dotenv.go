@@ -1,18 +1,24 @@
 package utils
 
-import (
-	"fmt"
-	"os"
+import "github.com/spf13/viper"
 
-	"github.com/joho/godotenv"
-)
+type Config struct {
+	PostgreDriver  string `mapstructure:"POSTGRES_DRIVER"`
+	PostgresSource string `mapstructure:"POSTGRES_SOURCE"`
+}
 
-func GodotEnv(key string) string {
-	err := godotenv.Load(".env")
+func LoadConfig(path string) (config Config, err error) {
+	viper.AddConfigPath(path)
+	viper.SetConfigType("env")
+	viper.SetConfigName("app")
 
+	viper.AutomaticEnv()
+
+	err = viper.ReadInConfig()
 	if err != nil {
-		fmt.Print("Error loading .env file")
+		return
 	}
 
-	return os.Getenv(key)
+	err = viper.Unmarshal(&config)
+	return
 }
