@@ -1,28 +1,20 @@
 package main
 
 import (
-	"database/sql"
-	"fmt"
 	"log"
 	dbConn "muxblog/db/sqlc"
 	"muxblog/router"
+	"muxblog/utils"
 	"net/http"
-
-	_ "github.com/go-sql-driver/mysql"
 )
 
 var (
-	db       *dbConn.Queries
-	username string = "root"
-	password string = ""
-	database string = "muxblog"
-
-	dsn = fmt.Sprintf("%v:%v@/%v", username, password, database)
+	db *dbConn.Queries
 )
 
 func main() {
 
-	conn, err := sql.Open("mysql", dsn)
+	conn, err := utils.Database()
 
 	if err != nil {
 		panic(err.Error())

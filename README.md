@@ -1,4 +1,4 @@
-### Learning Purpose Golang, Standart Lib
+### Learning Purpose Golang, standard Lib
 
 Package gorilla/mux implements a request router and dispatcher for matching incoming requests to their respective handler.
 
@@ -6,4 +6,4 @@ The name mux stands for "HTTP request multiplexer". Like the standard http.Serve
 
 ### Skema Database Mux Blog
 
-<img src="database_file/muxblog.png" alt="mux-blog" />
+<img src="images/gomuxblog.png" alt="mux-blog" />
